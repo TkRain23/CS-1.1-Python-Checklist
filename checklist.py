@@ -2,11 +2,7 @@ import sys
 import os
 from termcolor import colored, cprint
 
-
-checklist = list()
-
-
-# Define All Functions
+checklist = list()  # initialize a list called checklist to store items
 
 
 def create(item):  # this function creates an item within your list
@@ -14,16 +10,31 @@ def create(item):  # this function creates an item within your list
 
 
 def read(index):  # this function prints an item based on on it's index value
-    item = checklist[index]
-    return item
+    try:
+        item = checklist[int(index)]
+        return item
+    except ValueError:
+        cprint('List Indices must be integers, not strings', 'white', 'on_red')
+    except IndexError:
+        cprint('Index out of Bounds', 'white', 'on_red')
 
 
 def update(index, item):  # this function updates an item at a specific index
-    checklist[index] = item
+    try:
+        checklist[int(index)] = item
+    except ValueError:
+        cprint('List Indices must be integers, not strings', 'white', 'on_red')
+    except IndexError:
+        cprint('Index out of Bounds', 'white', 'on_red')
 
 
 def destroy(index):  # this function destroys an item at a specific index
-    checklist.pop(index)
+    try:
+        checklist.pop(int(index))
+    except ValueError:
+        cprint('List Indices must be integers, not strings', 'white', 'on_red')
+    except IndexError:
+        cprint('Index out of Bounds', 'white', 'on_red')
 
 
 def list_all_items():  # this function lists all items
@@ -34,12 +45,22 @@ def list_all_items():  # this function lists all items
 
 
 def mark_completed(index):
-    update(index, "{}{}".format("√", checklist[index]))
+    try:
+        update(int(index), "{}{}".format("√", checklist[int(index)]))
+    except ValueError:
+        cprint('List Indices must be integers, not strings', 'white', 'on_red')
+    except IndexError:
+        cprint('Index out of Bounds', 'white', 'on_red')
 
 
 def mark_incompleted(index):
     # removes the first character from the string fo this list
-    update(index, checklist[index][1:])
+    try:
+        update(index, checklist[int(index)][1:])
+    except ValueError:
+        cprint('List Indices must be integers, not strings', 'white', 'on_red')
+    except IndexError:
+        cprint('Index out of Bounds', 'white', 'on_red')
 
 
 def user_input(prompt):
@@ -56,24 +77,24 @@ def select(function_code):
 
     elif function_code == "R" or function_code == "r":
         item_index = user_input("Index Number?")
-        destroy(int(item_index))
         os.system("clear")
+        destroy(item_index)
 
     elif function_code == "U" or function_code == "u":
         item_index = user_input("Index Number?")
         input_item = user_input("Input Item:")
-        update(int(item_index), input_item)
         os.system("clear")
+        update(item_index, input_item)
 
     elif function_code == "C" or function_code == "c":
         item_index = user_input("Index Number?")
-        mark_completed(int(item_index))
         os.system("clear")
+        mark_completed(item_index)
 
     elif function_code == "I" or function_code == "i":
         item_index = user_input("Index Number?")
-        mark_incompleted(int(item_index))
         os.system("clear")
+        mark_incompleted(item_index)
 
     elif function_code == "P" or function_code == "p":
         list_all_items()
@@ -82,7 +103,7 @@ def select(function_code):
         return False
 
     else:
-        cprint('Unknown Option', 'red')
+        cprint('Unknown Option', 'cyan', 'on_white')
 
     return True
 
